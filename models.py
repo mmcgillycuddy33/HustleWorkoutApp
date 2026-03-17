@@ -56,7 +56,7 @@ class LiftingWorkout(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     workout_id = Column(Integer, ForeignKey("workouts.id"))
-    exercise = 1(String)
+    exercise = Column(String)
     weight_kg = Column(Float)
     reps = Column(Integer)
     sets = Column(Integer)
