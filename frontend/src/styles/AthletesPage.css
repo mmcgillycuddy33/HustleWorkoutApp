@@ -1,0 +1,43 @@
+.athletes-card {
+  max-width: 700px;
+}
+
+.athletes-title {
+  font-size: 40px;
+  text-align: left;
+}
+
+.athletes-back-button {
+  margin-bottom: 24px;
+}
+
+.athletes-empty {
+  font-size: 18px;
+  color: #6b7280;
+  text-align: left;
+}
+
+.athletes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.athlete-row {
+  padding: 18px 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background-color: #f9fafb;
+}
+
+.athlete-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.athlete-age {
+  font-size: 16px;
+  color: #4b5563;
+}

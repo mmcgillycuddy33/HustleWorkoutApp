@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from datetime import date
 from database import SessionLocal, engine
 from models import Base, Athlete, Workout, SwimmingWorkout, RunningWorkout, LiftingWorkout
+from fastapi.middleware.cors import CORSMiddleware
 
 # Create all tables
 Base.metadata.create_all(bind=engine)
@@ -12,6 +13,14 @@ app = FastAPI(
     title="Training Performance Analytics API",
     description="Backend system for tracking and analyzing athlete training data",
     version="0.1.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # --------------------
@@ -28,9 +37,10 @@ def get_db():
 # Pydantic Models
 # --------------------
 class AthleteCreate(BaseModel):
+    email: str
+    password: str
     name: str
     age: int | None = None
-    sport: str | None = None
 
 class WorkoutBase(BaseModel):
     athlete_id: int
@@ -70,6 +80,11 @@ def create_athlete(athlete: AthleteCreate, db: Session = Depends(get_db)):
     db.refresh(db_athlete)
     return db_athlete
 
+@app.get("/athletes/")
+def get_athlete(db: Session = Depends(get_db)):
+    athletes = db.query(Athlete).all()
+    return athletes
+
 # --------------------
 # Workout Endpoints
 # --------------------
@@ -89,7 +104,9 @@ def add_swimming_workout(workout: SwimmingWorkoutCreate, db: Session = Depends(g
     db.add(db_swim)
     db.commit()
     db.refresh(db_swim)
+
     return {"workout": db_workout, "swimming": db_swim}
+
 
 @app.post("/workouts/running/")
 def add_running_workout(workout: RunningWorkoutCreate, db: Session = Depends(get_db)):
@@ -107,7 +124,9 @@ def add_running_workout(workout: RunningWorkoutCreate, db: Session = Depends(get
     db.add(db_run)
     db.commit()
     db.refresh(db_run)
+
     return {"workout": db_workout, "running": db_run}
+
 
 @app.post("/workouts/lifting/")
 def add_lifting_workout(workout: LiftingWorkoutCreate, db: Session = Depends(get_db)):
@@ -126,4 +145,5 @@ def add_lifting_workout(workout: LiftingWorkoutCreate, db: Session = Depends(get
     db.add(db_lifting)
     db.commit()
     db.refresh(db_lifting)
+
     return {"workout": db_workout, "lifting": db_lifting}

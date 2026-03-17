@@ -1,0 +1,15 @@
+.dashboard-card {
+  max-width: 500px;
+  text-align: center;
+}
+
+.dashboard-title {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.dashboard-message {
+  font-size: 18px;
+  color: #4b5563;
+  margin-bottom: 30px;
+}

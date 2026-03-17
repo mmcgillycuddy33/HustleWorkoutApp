@@ -1,0 +1,84 @@
+.create-athlete-card {
+  max-width: 520px;
+}
+
+.auth-tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.auth-tab.active {
+  color: #111827;
+  border-bottom: 2px solid #111827;
+}
+
+.create-athlete-title {
+  margin-bottom: 28px;
+  font-size: 32px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.create-athlete-banner {
+  margin-bottom: 24px;
+  padding: 14px 16px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #374151;
+  text-align: left;
+}
+
+.create-athlete-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 18px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.button-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.form-message {
+  margin-top: 22px;
+  font-size: 16px;
+  color: #111827;
+}
