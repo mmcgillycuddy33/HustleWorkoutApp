@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../styles/theme.css";
-import "../../styles/CreateAthletePage.css";
+import "../styles/theme.css";
+import "../styles/CreateAthletePage.css";
 
 function CreateAthletePage() {
   const [name, setName] = useState("");
@@ -51,9 +51,35 @@ function CreateAthletePage() {
     }
   };
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
-    setMessage("Sign in flow coming next.");
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || "Sign in failed");
+      }
+      
+      localStorage.setItem("hustleUser", JSON.stringify(data));
+
+      setMessage(`Welcome back, ${data.name}!`);
+      navigate("/dashboard", { state: data });
+    } catch (error) {
+      setMessage(error.message);
+      console.error(error);
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from datetime import date
@@ -40,7 +40,11 @@ class AthleteCreate(BaseModel):
     email: str
     password: str
     name: str
-    age: int | None = None
+    age: int
+
+class AthleteLogin(BaseModel):
+    email: str
+    password: str
 
 class WorkoutBase(BaseModel):
     athlete_id: int
@@ -52,9 +56,11 @@ class SwimmingWorkoutCreate(WorkoutBase):
     stroke: str
 
 class RunningWorkoutCreate(WorkoutBase):
-    distance_km: float
-    time_minutes: float
+    measurement: str
+    distance_run: float
+    duration_seconds: int
     terrain: str
+    calories: int
 
 class LiftingWorkoutCreate(WorkoutBase):
     exercise: str
@@ -85,12 +91,31 @@ def get_athlete(db: Session = Depends(get_db)):
     athletes = db.query(Athlete).all()
     return athletes
 
+@app.post("/login/")
+def login_athlete(login_data: AthleteLogin, db: Session = Depends(get_db)):
+    athlete = db.query(Athlete).filter(Athlete.email == login_data.email).first()
+    if athlete is None:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    if athlete.password != login_data.password:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    return {
+        "message": "Login successful",
+        "athlete_id": athlete.id,
+        "name": athlete.name
+    }
+
 # --------------------
 # Workout Endpoints
 # --------------------
 @app.post("/workouts/swimming/")
 def add_swimming_workout(workout: SwimmingWorkoutCreate, db: Session = Depends(get_db)):
-    db_workout = Workout(athlete_id=workout.athlete_id, date=workout.date, type="swimming")
+    db_workout = Workout(
+        athlete_id=workout.athlete_id,
+        date=workout.date,
+        type="swimming"
+    )
     db.add(db_workout)
     db.commit()
     db.refresh(db_workout)
@@ -107,19 +132,24 @@ def add_swimming_workout(workout: SwimmingWorkoutCreate, db: Session = Depends(g
 
     return {"workout": db_workout, "swimming": db_swim}
 
-
 @app.post("/workouts/running/")
 def add_running_workout(workout: RunningWorkoutCreate, db: Session = Depends(get_db)):
-    db_workout = Workout(athlete_id=workout.athlete_id, date=workout.date, type="running")
+    db_workout = Workout(
+        athlete_id=workout.athlete_id,
+        date=workout.date,
+        type="running"
+    )
     db.add(db_workout)
     db.commit()
     db.refresh(db_workout)
 
     db_run = RunningWorkout(
         workout_id=db_workout.id,
-        distance_km=workout.distance_km,
-        time_minutes=workout.time_minutes,
-        terrain=workout.terrain
+        measurement=workout.measurement,
+        distance_run=workout.distance_run,
+        duration_seconds=workout.duration_seconds,
+        terrain=workout.terrain,
+        calories=workout.calories
     )
     db.add(db_run)
     db.commit()
@@ -127,10 +157,13 @@ def add_running_workout(workout: RunningWorkoutCreate, db: Session = Depends(get
 
     return {"workout": db_workout, "running": db_run}
 
-
 @app.post("/workouts/lifting/")
 def add_lifting_workout(workout: LiftingWorkoutCreate, db: Session = Depends(get_db)):
-    db_workout = Workout(athlete_id=workout.athlete_id, date=workout.date, type="lifting")
+    db_workout = Workout(
+        athlete_id=workout.athlete_id,
+        date=workout.date,
+        type="lifting"
+    )
     db.add(db_workout)
     db.commit()
     db.refresh(db_workout)

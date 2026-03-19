@@ -1,0 +1,80 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 28px;
+  background-color: white;
+  border-bottom: 1px solid #d1d5db;
+  box-sizing: border-box;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-logo {
+  margin: 0;
+  font-family: "HustleFont";
+  font-size: 72px;
+  letter-spacing: 4px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.header-nav {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.header-tab {
+  padding: 10px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #111827;
+  border-radius: 8px;
+}
+
+.header-tab:hover {
+  background-color: #f3f4f6;
+}
+
+/* -------------------- */
+/* Dropdown Styles */
+/* -------------------- */
+
+.header-dropdown {
+  position: relative;
+}
+
+.header-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 150px;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 6px 0;
+  z-index: 1000;
+}
+
+.header-dropdown-item {
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 15px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: #111827;
+}
+
+.header-dropdown-item:hover {
+  background-color: #f3f4f6;
+}

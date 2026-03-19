@@ -11,6 +11,7 @@ class Athlete(Base):
     password = Column(String, nullable=False)
     name = Column(String, nullable=False)
     age = Column(Integer, nullable=False)
+
     workouts = relationship("Workout", back_populates="athlete")
 
 class Workout(Base):
@@ -20,7 +21,7 @@ class Workout(Base):
     athlete_id = Column(Integer, ForeignKey("athletes.id"))
     date = Column(Date, nullable=False)
     type = Column(String, nullable=False)
-    
+
     athlete = relationship("Athlete", back_populates="workouts")
     swimming = relationship("SwimmingWorkout", back_populates="workout", uselist=False)
     running = relationship("RunningWorkout", back_populates="workout", uselist=False)
@@ -31,9 +32,9 @@ class SwimmingWorkout(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     workout_id = Column(Integer, ForeignKey("workouts.id"))
-    distance_meters = Column(Float)
-    time_minutes = Column(Float)
-    stroke = Column(String)
+    distance_meters = Column(Float, nullable=False)
+    time_minutes = Column(Float, nullable=False)
+    stroke = Column(String, nullable=False)
 
     workout = relationship("Workout", back_populates="swimming")
 
@@ -42,21 +43,22 @@ class RunningWorkout(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     workout_id = Column(Integer, ForeignKey("workouts.id"))
-    distance_km = Column(Float)
-    time_minutes = Column(Float)
-    terrain = Column(String)
+    measurement = Column(String, nullable=False)
+    distance_run = Column(Float, nullable=False)
+    duration_seconds = Column(Integer, nullable=False)
+    terrain = Column(String, nullable=False)
+    calories = Column(Integer, nullable=False)
 
     workout = relationship("Workout", back_populates="running")
-
 
 class LiftingWorkout(Base):
     __tablename__ = "lifting_workouts"
 
     id = Column(Integer, primary_key=True, index=True)
     workout_id = Column(Integer, ForeignKey("workouts.id"))
-    exercise = Column(String)
-    weight_kg = Column(Float)
-    reps = Column(Integer)
-    sets = Column(Integer)
+    exercise = Column(String, nullable=False)
+    weight_kg = Column(Float, nullable=False)
+    reps = Column(Integer, nullable=False)
+    sets = Column(Integer, nullable=False)
 
     workout = relationship("Workout", back_populates="lifting")

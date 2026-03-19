@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../styles/theme.css";
-import "../../styles/AthletesPage.css";
+import "../styles/theme.css";
+import "../styles/AthletesPage.css";
 
 function AthletesPage() {
   const [athletes, setAthletes] = useState([]);
